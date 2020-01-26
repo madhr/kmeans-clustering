@@ -2,7 +2,7 @@ package main.java;
 
 import java.util.Objects;
 
-public class Centroid {
+public class Centroid implements Comparable<Centroid>{
 
     private Integer value;
 
@@ -17,6 +17,14 @@ public class Centroid {
         if (o == null || getClass() != o.getClass()) return false;
         Centroid centroid = (Centroid) o;
         return Objects.equals(value, centroid.value);
+    }
+
+    @Override
+    public int compareTo(Centroid centroid) {
+        if (getValue() == null || centroid.getValue() == null) {
+            return 0;
+        }
+        return getValue().compareTo(centroid.getValue());
     }
 
     @Override

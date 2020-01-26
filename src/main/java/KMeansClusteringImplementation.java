@@ -45,7 +45,7 @@ public class KMeansClusteringImplementation implements IKMeansClustering {
 
     public KCentroids convertToKCentroids(Map<Centroid,List<Point>> centroidsToListOfPoints){
         List<Centroid> centroidList = centroidsToListOfPoints.keySet().stream().collect(Collectors.toList());
-
+        Collections.sort(centroidList);
         return new KCentroids(centroidList);
     }
 
