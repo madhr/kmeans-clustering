@@ -15,9 +15,9 @@ public class Main {
         List<KCentroids> centroids = kMeans.getListOfKCentroids(k, retryLimit, path);
 
         HexColorConverter hexConverter = new HexColorConverter();
-        for(KCentroids centroidsList : centroids){
-            List<HexColor> hexColors = hexConverter.convertToColor(centroidsList.getCentroidList());
-            System.out.println(hexColors);
+        for(KCentroids kCentroids : centroids){
+            List<HexColor> hexColors = hexConverter.convertToColor(kCentroids.getCentroidList());
+            System.out.println(hexColors+" standard deviation: "+kCentroids.getStandardDeviation());
         }
     }
 }

@@ -46,7 +46,8 @@ public class KMeansClusteringImplementation implements IKMeansClustering {
     public KCentroids convertToKCentroids(Map<Centroid,List<Point>> centroidsToListOfPoints){
         List<Centroid> centroidList = centroidsToListOfPoints.keySet().stream().collect(Collectors.toList());
         Collections.sort(centroidList);
-        return new KCentroids(centroidList);
+        Double standardDeviation = StandardDeviation.calculate(centroidList);
+        return new KCentroids(centroidList, standardDeviation);
     }
 
     public Map<Centroid,List<Point>> reassignPointsToNearestCentroids(List<Point> points, Map<Centroid,List<Point>> centroidsToListOfPoints){
@@ -70,7 +71,7 @@ public class KMeansClusteringImplementation implements IKMeansClustering {
         Map<Centroid, Centroid> oldAndNewMap = new HashMap<>();
         for (Centroid oldCentroid : centroidsToListOfPoints.keySet()) {
             List<Point> points = centroidsToListOfPoints.get(oldCentroid);
-            Integer average = calculateAverage(points);
+            Integer average = Mean.calculateForPoints(points);
             Point nearest = getNearestPoint(new Point(average), points);
             Centroid newCentroid = new Centroid(nearest.value);
             oldAndNewMap.put(oldCentroid, newCentroid);
@@ -178,15 +179,6 @@ public class KMeansClusteringImplementation implements IKMeansClustering {
         return  allPixels;
     }
 
-    public Integer calculateAverage(List<Point> points){
 
-        if(points == null || points.isEmpty()){
-            return 0;
-        }
-
-        Integer sumOfPointsValues = points.stream().mapToInt(p -> p.getValue()).sum();
-
-        return sumOfPointsValues / points.size();
-    }
 
 }
