@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface IKMeansClustering {
 
-    List<KCentroids> getResultCentroids(int k, int retryLimit, String path) throws IOException;
+    List<KCentroids> getListOfKCentroids(int k, int retryLimit, String path) throws IOException;
 }

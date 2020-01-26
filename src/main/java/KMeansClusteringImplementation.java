@@ -7,38 +7,35 @@ import java.util.stream.Collectors;
 
 public class KMeansClusteringImplementation implements IKMeansClustering {
 
-    public List<KCentroids> getResultCentroids(int k, int retryLimit, String path) throws IOException {
+    public List<KCentroids> getListOfKCentroids(int k, int retryLimit, String path) throws IOException {
 
         ImageParser imageParser = new ImageParser();
         BufferedImage image = imageParser.getBufferedImage(path);
 
+        List<Point> points = getBufferedImagePixelsAsPoints(image);
         List<Centroid> initialCentroids = initializeCentroids(k, image);
-        List<Point> allPixels = getBufferedImagePixelsAsPoints(image);
         Map<Centroid,List<Point>> centroidsToListOfPoints = initializeCentroidsToListOfPoints(initialCentroids);
 
-        LinkedList<KCentroids> steps = new LinkedList();
+        LinkedList<KCentroids> kCentroidsList = new LinkedList();
 
         int retry = 0;
 
         while(retry < retryLimit) {
 
-            // assign pixels to their nearest centroids
-            centroidsToListOfPoints = assignPixelsToCentroids(allPixels, centroidsToListOfPoints);
-            //        compute k new centroids (average of all samples in a cluster)
+            centroidsToListOfPoints = reassignPointsToNearestCentroids(points, centroidsToListOfPoints);
             Map<Centroid, Centroid> oldAndNewMap = computeKNewCentroids(centroidsToListOfPoints);
-            // check if different and update centers
             centroidsToListOfPoints = updateCentroids(centroidsToListOfPoints, oldAndNewMap);
 
             KCentroids kCentroids = convertToKCentroids(centroidsToListOfPoints);
-            steps.add(kCentroids);
+            kCentroidsList.add(kCentroids);
 
             retry++;
         }
 
-        return steps;
+        return kCentroidsList;
     }
 
-    Map<Centroid,List<Point>> initializeCentroidsToListOfPoints(List<Centroid> initialCentroids){
+    public Map<Centroid,List<Point>> initializeCentroidsToListOfPoints(List<Centroid> initialCentroids){
         Map<Centroid,List<Point>> centroidsToListOfPoints = new HashMap<>();
         for(Centroid centroid : initialCentroids){
             centroidsToListOfPoints.put(centroid, new ArrayList<>());
@@ -46,29 +43,29 @@ public class KMeansClusteringImplementation implements IKMeansClustering {
         return centroidsToListOfPoints;
     }
 
-    KCentroids convertToKCentroids(Map<Centroid,List<Point>> centroidsToListOfPoints){
+    public KCentroids convertToKCentroids(Map<Centroid,List<Point>> centroidsToListOfPoints){
         List<Centroid> centroidList = centroidsToListOfPoints.keySet().stream().collect(Collectors.toList());
 
         return new KCentroids(centroidList);
     }
 
-    Map<Centroid,List<Point>> assignPixelsToCentroids(List<Point> allPixels, Map<Centroid,List<Point>> centroidsToListOfPoints){
+    public Map<Centroid,List<Point>> reassignPointsToNearestCentroids(List<Point> points, Map<Centroid,List<Point>> centroidsToListOfPoints){
 
         List<Centroid> currentCentroids = new ArrayList<Centroid>(centroidsToListOfPoints.keySet());
 
-        for (Point pixel : allPixels) {
-            Centroid nearest = getNearestCentroid(pixel, currentCentroids);
+        for (Point point : points) {
+            Centroid nearest = getNearestCentroid(point, currentCentroids);
             if (centroidsToListOfPoints.get(nearest) == null) {
-                centroidsToListOfPoints.put(nearest, new ArrayList<>(Arrays.asList(pixel)));
+                centroidsToListOfPoints.put(nearest, new ArrayList<>(Arrays.asList(point)));
             } else {
-                centroidsToListOfPoints.get(nearest).add(pixel);
+                centroidsToListOfPoints.get(nearest).add(point);
             }
         }
 
         return centroidsToListOfPoints;
     }
 
-    Map<Centroid, Centroid> computeKNewCentroids(Map<Centroid,List<Point>> centroidsToListOfPoints){
+    public Map<Centroid, Centroid> computeKNewCentroids(Map<Centroid,List<Point>> centroidsToListOfPoints){
 
         Map<Centroid, Centroid> oldAndNewMap = new HashMap<>();
         for (Centroid oldCentroid : centroidsToListOfPoints.keySet()) {
@@ -81,11 +78,10 @@ public class KMeansClusteringImplementation implements IKMeansClustering {
         return oldAndNewMap;
     }
 
-    Map<Centroid,List<Point>> updateCentroids(Map<Centroid,List<Point>> centroidsToListOfPoints, Map<Centroid, Centroid> oldAndNewMap){
+    public Map<Centroid,List<Point>> updateCentroids(Map<Centroid,List<Point>> centroidsToListOfPoints, Map<Centroid, Centroid> oldAndNewMap){
         for (Centroid oldCentroid : oldAndNewMap.keySet()){
             Centroid newCentroid = oldAndNewMap.get(oldCentroid);
             if(newCentroid.getValue() != oldCentroid.getValue()){
-//                List<Point> points = centroidsToListOfPoints.get(oldCentroid);
                 List<Point> points = centroidsToListOfPoints.remove(oldCentroid);
                 centroidsToListOfPoints.put(newCentroid, points);
             }

@@ -25,7 +25,7 @@ public class KMeansClusteringImplementationTest {
 
         String path = "src/main/resources/cherries.JPG";
 
-        assertTrue(kMeans.getResultCentroids(NUMBER_OF_CENTROIDS, NUMBER_OF_RETRIES, path).size() > 0);
+        assertTrue(kMeans.getListOfKCentroids(NUMBER_OF_CENTROIDS, NUMBER_OF_RETRIES, path).size() > 0);
     }
 
     @Test

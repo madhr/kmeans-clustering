@@ -12,7 +12,7 @@ public class Main {
         int k = 8;
         int retryLimit = 10;
 
-        List<KCentroids> centroids = kMeans.getResultCentroids(k, retryLimit, path);
+        List<KCentroids> centroids = kMeans.getListOfKCentroids(k, retryLimit, path);
 
         HexColorConverter hexConverter = new HexColorConverter();
         for(KCentroids centroidsList : centroids){
