@@ -23,7 +23,7 @@ public class KMeansClusteringImplementationTest {
 
         KMeansClusteringImplementation kMeans = new KMeansClusteringImplementation();
 
-        String path = "src/main/resources/55790034.JPG";
+        String path = "src/main/resources/cherries.JPG";
 
         assertTrue(kMeans.getResultCentroids(NUMBER_OF_CENTROIDS, NUMBER_OF_RETRIES, path).size() > 0);
     }
@@ -108,7 +108,7 @@ public class KMeansClusteringImplementationTest {
         KMeansClusteringImplementation kMeans = new KMeansClusteringImplementation();
 
         assertThrows(IllegalArgumentException.class, () -> {
-            kMeans.getInitialCentroids(NUMBER_OF_CENTROIDS,null);
+            kMeans.initializeCentroids(NUMBER_OF_CENTROIDS,null);
         });
     }
 
@@ -118,7 +118,7 @@ public class KMeansClusteringImplementationTest {
         KMeansClusteringImplementation kMeans = new KMeansClusteringImplementation();
         BufferedImage bufferedImage = new BufferedImage(BUFFERED_IMAGE_WIDTH, BUFFERED_IMAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
 
-        assertTrue(kMeans.getInitialCentroids(NUMBER_OF_CENTROIDS, bufferedImage).size() == NUMBER_OF_CENTROIDS);
+        assertTrue(kMeans.initializeCentroids(NUMBER_OF_CENTROIDS, bufferedImage).size() == NUMBER_OF_CENTROIDS);
     }
 
     @Test

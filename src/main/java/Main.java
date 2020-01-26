@@ -3,25 +3,21 @@ package main.java;
 import java.io.IOException;
 import java.util.List;
 
-
 public class Main {
-
 
     public static void main(String[] args) throws IOException {
         KMeansClusteringImplementation kMeans = new KMeansClusteringImplementation();
-        String path = "src/main/resources/55790034.JPG";
+        String path = "src/main/resources/expo.JPG";
 
-        List<Centroid> centroids = kMeans.getResultCentroids(10, 10, path);
+        int k = 8;
+        int retryLimit = 10;
+
+        List<KCentroids> centroids = kMeans.getResultCentroids(k, retryLimit, path);
 
         HexColorConverter hexConverter = new HexColorConverter();
-        List<HexColor> hexColors = hexConverter.convertToColor(centroids);
-
-        System.out.println(hexColors);
-
-        RGBConverter rgbConverter = new RGBConverter();
-        List<RGBColor> rgbColors = rgbConverter.convertToColor(centroids);
-
-        System.out.println(rgbColors);
-
+        for(KCentroids centroidsList : centroids){
+            List<HexColor> hexColors = hexConverter.convertToColor(centroidsList.getCentroidList());
+            System.out.println(hexColors);
+        }
     }
 }
