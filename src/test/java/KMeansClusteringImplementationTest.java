@@ -1,8 +1,6 @@
 package test.java;
 
-import main.java.Centroid;
-import main.java.KMeansClusteringImplementation;
-import main.java.Point;
+import main.java.*;
 import org.junit.jupiter.api.Test;
 
 import java.awt.image.BufferedImage;
@@ -77,29 +75,7 @@ public class KMeansClusteringImplementationTest {
     @Test
     public void calculateAverageArgumentIsNull() {
 
-        KMeansClusteringImplementation kMeans = new KMeansClusteringImplementation();
-
-        assertEquals(kMeans.calculateAverage(null), new Integer(0));
-    }
-
-    @Test
-    public void calculateAverageArgumentIsEmptyList() {
-
-        KMeansClusteringImplementation kMeans = new KMeansClusteringImplementation();
-
-        ArrayList<Point> points = new ArrayList<>();
-        assertEquals(kMeans.calculateAverage(points), new Integer(0));
-    }
-
-    @Test
-    public void calculateAverageReturnsAverageOfTwoNumbers() {
-
-        KMeansClusteringImplementation kMeans = new KMeansClusteringImplementation();
-
-        ArrayList<Point> points = new ArrayList<>();
-        points.add(new Point(new Integer(10)));
-        points.add(new Point(new Integer(12)));
-        assertEquals(kMeans.calculateAverage(points), new Integer(11));
+        assertEquals(Mean.calculateForPoints(null), new Integer(0));
     }
 
     @Test
