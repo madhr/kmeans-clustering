@@ -1,4 +1,4 @@
 package main.java;
 
-public class Point2 {
+public class Mean {
 }
