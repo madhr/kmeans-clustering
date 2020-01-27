@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Point {
 
-    Integer value;
+    private Integer value;
 
     public Point(Integer value) {
 

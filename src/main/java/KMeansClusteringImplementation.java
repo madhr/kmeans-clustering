@@ -73,7 +73,7 @@ public class KMeansClusteringImplementation implements IKMeansClustering {
             List<Point> points = centroidsToListOfPoints.get(oldCentroid);
             Integer average = Mean.calculateForPoints(points);
             Point nearest = getNearestPoint(new Point(average), points);
-            Centroid newCentroid = new Centroid(nearest.value);
+            Centroid newCentroid = new Centroid(nearest.getValue());
             oldAndNewMap.put(oldCentroid, newCentroid);
         }
         return oldAndNewMap;
@@ -91,9 +91,9 @@ public class KMeansClusteringImplementation implements IKMeansClustering {
         return centroidsToListOfPoints;
     }
 
-    public Centroid getNearestCentroid(Point record, List<Centroid> centroids) {
+    public Centroid getNearestCentroid(Point point, List<Centroid> centroids) {
 
-        if(record == null){
+        if(point == null){
             throw new IllegalArgumentException("Point cannot be null");
         }
         if(centroids == null || centroids.isEmpty()){
@@ -105,7 +105,7 @@ public class KMeansClusteringImplementation implements IKMeansClustering {
 
         for (Centroid centroid : centroids) {
             Distance distance = new Distance2D();
-            double currentDistance = distance.getDistance(record.getValue(), centroid.getValue());
+            double currentDistance = distance.getDistance(point.getValue(), centroid.getValue());
 
             if (currentDistance < minimumDistance) {
                 minimumDistance = currentDistance;
