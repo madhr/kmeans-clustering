@@ -7,10 +7,10 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         KMeansClusteringImplementation kMeans = new KMeansClusteringImplementation();
-        String path = "src/main/resources/expo.JPG";
+        String path = "src/main/resources/kmc-expo.JPG";
 
-        int k = 8;
-        int retryLimit = 10;
+        int k = 5;
+        int retryLimit = 3;
 
         List<KCentroids> centroids = kMeans.getListOfKCentroids(k, retryLimit, path);
 
